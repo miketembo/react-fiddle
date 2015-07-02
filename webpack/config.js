@@ -53,6 +53,7 @@ var config = {
     contentBase: path.resolve(pkg.config.buildDir),
     hot: true,
     noInfo: false,
+    quiet: false,
     inline: true,
     stats: { colors: true }
   }

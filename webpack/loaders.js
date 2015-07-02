@@ -74,7 +74,8 @@ var loaders = [
   },
   {
     test: /\.json$/,
-    exclude: /node_modules/,
+    // @TODO allow json only for module ajv
+    // exclude: /node_modules/,
     loaders: jsonLoader
   },
   {

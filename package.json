@@ -15,7 +15,7 @@
     "env": "env",
     "lint": "eslint --ext .js --ext .jsx ./app ./webpack && echo No linting errors.",
     "prebuild": "npm run clean",
-    "prestart": "npm install",
+    "prestart": "",
     "pretest": "npm install && npm run lint",
     "pretest-travis": "npm install && npm run lint",
     "start": "NODE_ENV=development node dev-server ./webpack/config",
@@ -24,10 +24,16 @@
     "webpack": "webpack --colors --progress --config ./webpack/config"
   },
   "dependencies": {
+    "ajv": "^0.6.1",
     "classnames": "^2.1.1",
     "flux": "^2.0.3",
+    "js-beautify": "^1.5.10",
+    "json-loader": "^0.5.2",
+    "lodash": "^3.10.0",
     "normalize.css": "^3.0.3",
-    "react": "^0.13.3"
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "rx": "^2.5.3"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.1.11",
