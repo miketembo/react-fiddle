@@ -1,10 +1,10 @@
-import {iAccount} from './account.action-creator';
+import {iAccount, keys as iAccountKeys} from './account';
 import _ from 'lodash';
 
 export default function init() {
   // app keys
   let appKeys = _.assign({},
-    iAccount.exportKeys()
+    iAccountKeys
   );
 
   setTimeout(()=> {
