@@ -1,3 +1,3 @@
-import {iAccount} from './account.action-creator';
+import {iAccount, iAccountKeys} from './account.action-creator';
 
-export {iAccount};
+export {iAccount, iAccountKeys};

@@ -16,14 +16,18 @@ var entry = {
 };
 
 if (DEBUG) {
-  entry.app.push(
+  // entry.app.unshift(
+  //   '../webpack/dev-support.js'
+  // );
+
+  entry.app.unshift(
     util.format(
       'webpack-dev-server/client?http://%s:%d',
       pkg.config.devHost,
       pkg.config.devPort
     )
   );
-  entry.app.push('webpack/hot/dev-server');
+  // entry.app.push('webpack/hot/dev-server');
 }
 
 var config = {
@@ -31,7 +35,7 @@ var config = {
   cache: DEBUG,
   debug: DEBUG,
   target: 'web',
-  devtool: DEBUG || TEST ? 'inline-source-map' : false,
+  devtool: DEBUG || TEST ? 'eval' : false,
   entry: entry,
   output: {
     path: path.resolve(pkg.config.buildDir),
@@ -47,11 +51,14 @@ var config = {
   ],
   plugins: plugins,
   resolve: {
+    root: [
+      path.join(__dirname, '../app')
+    ],
     extensions: ['', '.js', '.json', '.jsx']
   },
   devServer: {
     contentBase: path.resolve(pkg.config.buildDir),
-    hot: true,
+    hot: false,
     noInfo: false,
     quiet: false,
     inline: true,

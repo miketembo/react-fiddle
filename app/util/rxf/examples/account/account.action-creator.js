@@ -1,5 +1,5 @@
-import RxF from '../../';
-import decorateClass from '../../../class-decorator';
+import RxF from 'util/rxf';
+import decorateClass from 'util/class-decorator';
 import {IAccountDecorator} from './account.decorators';
 
 let actions = [

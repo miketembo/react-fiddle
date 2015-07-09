@@ -16,9 +16,8 @@ export function createActionKeys(topic, actions) {
 export function assignStateActions(ActionCreator, topic, actions) {
   actions.reduce( (ac, x) => {
     let actionName = _.camelCase(x);
-    ac[actionName] = function action(data, source='view') {
-
-      this.subj.onNext({
+    ac[actionName] = function action(data={}, source='view') {
+      this.src.onNext({
         state: 'pending',
         source: source,
         action: `${this.topic}__${actionName}`,
@@ -27,7 +26,7 @@ export function assignStateActions(ActionCreator, topic, actions) {
     };
     ac[`${actionName}Done`] = function done(data, source='server') {
       let state = 'done';
-      this.subj.onNext({
+      this.src.onNext({
         state: state,
         source: source,
         action: `${this.topic}__${actionName}--${state}`,
@@ -36,7 +35,9 @@ export function assignStateActions(ActionCreator, topic, actions) {
     };
     ac[`${actionName}Error`] = function error(err, source='server', errType=Error) {
       let state = 'error';
-      this.subj.onError({
+      // @TODO  rethink error Object e.g. error.data instead error.err and that
+      //        weird errType that was ment to be actual js error/exception
+      this.src.onNext({
         err: err,
         state: state,
         source: source,
@@ -60,9 +61,7 @@ export function assignActions(ActionCreator, actions, topic) {
 
     exportKeys(target={}) {
       return _.reduce(this.keys, (ac, v, k) => {
-
         ac[`${this.topic.toUpperCase()}_${k}`] = v;
-
         return ac;
       }, target);
     }

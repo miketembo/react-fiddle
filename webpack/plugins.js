@@ -1,6 +1,7 @@
 var path = require('path');
 var util = require('util');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ReloadPlugin = require('webpack-reload-plugin');
 var webpack = require('webpack');
 var pkg = require('../package.json');
 
@@ -13,9 +14,10 @@ var plugins = [
   new webpack.optimize.OccurenceOrderPlugin()
 ];
 if (DEBUG) {
-  plugins.push(
-    new webpack.HotModuleReplacementPlugin()
-  );
+  plugins.push(new ReloadPlugin("localhost:8000"));
+  // plugins.push(
+  //   new webpack.HotModuleReplacementPlugin()
+  // );
 } else if (!TEST) {
   plugins.push(
     new ExtractTextPlugin(cssBundle, {
