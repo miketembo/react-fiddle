@@ -1,4 +1,10 @@
-.editableList {
+.editableList__item {
+
+  & > div > div {
+    padding-top: 0 !important;
+    padding-bottom: !important;
+  }
+
   &._is_hidden {
     opacity: 0;
     visibility: 0;

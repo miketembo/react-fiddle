@@ -5,132 +5,18 @@ import RxF from 'util/rxf';
 import Rx from 'rx';
 import cn from 'classnames';
 
-import './textfield.scss';
-
-/*
-    [x] add new
-    [x] edit
-    [x] remove
-    [ ] undo
-    [ ] (un)mark as done
-    [ ] persist any change
- */
-
-let actions = [
-  'add',
-  'update',
-  'remove'
-];
-
-let IGrocery = RxF.ActionCreator('groceryEditor', actions);
-let iGrocery = new IGrocery();
-
-iGrocery.src.subscribe(
-  (x) => {
-    console.log("iGrocery. action: %s", x.action);
-  }
-);
-
-[
-  'Macaroni',
-  // 'Salmon',
-  // 'Cheese',
-  // 'Pepper',
-  // 'Salt',
-  'Strawberries'
-].forEach(function(x) {
-  iGrocery.addDone({
-    _id: Date.now(),
-    createdAt: new Date().toISOString(),
-    title: x,
-    isDone: false //Math.random() < 0.5
-  });
-});
-
-class GroceryHandler {
-  constructor() {
-    iGrocery.$on(iGrocery.keys.ADD)
-      .map( x => x.data )
-      .flatMap(this.add)
-      // @TODO .subscribe(iGrocery.addDoneObserver)
-      .subscribe(iGrocery.addDone.bind(iGrocery))
-    ;
-
-    iGrocery.$on(iGrocery.keys.REMOVE)
-      .map(x=>x.data)
-      .flatMap(this.remove)
-      .subscribe(iGrocery.removeDone.bind(iGrocery))
-  }
-
-  add(grocery) {
-    return Rx.Observable.create( obs => {
-      setTimeout(function() {
-
-        grocery._id = Date.now();
-        grocery.createdAt = new Date();
-
-        obs.onNext(grocery);
-        obs.onCompleted();
-
-      }, 300);
-    });
-  }
-
-  remove(id) {
-    return Rx.Observable.return({code:204, item: {_id: id}}).delay(300);
-  }
-}
-
-let groceryHandler = new GroceryHandler();
-
-let groceryStore = (function GroceryStore() {
-  let state = {
-    items: []
-  };
-  let src = new Rx.BehaviorSubject(state);
-
-  let observer = Rx.Observer.create(
-    src.onNext.bind(src)
-  );
-
-  // brainfart: suspend listeners/subscribers e.g. store.pause() for testing purposes
-
-  iGrocery.$on(iGrocery.keys.ADD_DONE)
-    .map(function(x) {
-      state.items.push(x.data);
-      return state;
-    })
-    .subscribe(observer)
-  ;
-
-  iGrocery.$on(iGrocery.keys.REMOVE_DONE)
-    .map(function(x) {
-      let removedItemId = x.data.item._id;
-      return state = update(state, {
-        items: {
-          $apply: items => items.filter( item => item._id !== removedItemId)
-        }
-      });
-    })
-    .subscribe(observer)
-  ;
-
-  return {
-    src: src,
-    subscribe: src.subscribe.bind(src)
-  }
-})();
-
-/*
-  - grocery add(persist)/update/remove
-  - groceryListChange
-*/
+import './editable-list.scss';
+import {iGrocery} from './grocery.interface';
+import {groceryStore} from './grocery.store';
 
 class GroceryEditor extends React.Component {
   componentWillMount() {
-    groceryStore.subscribe( x => {
+    this.subscription = groceryStore.subscribe( x => {
       this.setState(x);
     });
+  }
+  componentWillUnmount() {
+    this.subscription.dispose();
   }
 
   addGrocery(e) {
@@ -170,7 +56,16 @@ class GroceryEditor extends React.Component {
       }));
     }
 
-    iGrocery.remove(item._id);
+    iGrocery.remove(item);
+  }
+
+  toggleItemDone(item) {
+
+    item = update(item, {
+      isDone: {$set: !item.isDone}
+    });
+
+    iGrocery.update(item);
   }
 
   mapGroceryList(items) {
@@ -191,7 +86,7 @@ class GroceryEditor extends React.Component {
         textfield: true
       };
       let liClass = {
-        editableList: true,
+        'editableList__item': true,
         hidden: false
       };
 
@@ -216,7 +111,7 @@ class GroceryEditor extends React.Component {
           className={liClass}
           rightIconButton={removeBtn}
           key={x._id}>
-          <Checkbox style={cbStyle} name="grocery" checked={x.isDone} />
+          <Checkbox onClick={this.toggleItemDone.bind(this, x)} style={cbStyle} name="grocery" checked={x.isDone} />
           <TextField
             onBlur={this.disableEditMode.bind(this, x._id)}
             onTouchTap={this.enableEditMode.bind(this, x._id)}
@@ -228,11 +123,10 @@ class GroceryEditor extends React.Component {
 
   render() {
 
-    if (!this.state) { return <div>...</div>  }
+    if (!this.state) { return <div>...</div>;  }
 
     return (
       <div>
-
         <List subheader="Groceries">
           <ListItem>
             <TextField floatingLabelText="Enter grocery" onEnterKeyDown={this.addGrocery.bind(this)} />
