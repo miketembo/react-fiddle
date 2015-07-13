@@ -10,6 +10,20 @@ import {iGrocery} from './grocery.interface';
 import {groceryStore} from './grocery.store';
 
 class GroceryEditor extends React.Component {
+  constructor(...args) {
+    super(...args);
+
+    this.updateItemContent = new Rx.Subject();
+
+    this.updateItemContent
+      .debounce(700)
+      .distinctUntilChanged()
+      .subscribe(
+        iGrocery.update.bind(iGrocery)
+      )
+    ;
+  }
+
   componentWillMount() {
     this.subscription = groceryStore.subscribe( x => {
       this.setState(x);
@@ -60,12 +74,17 @@ class GroceryEditor extends React.Component {
   }
 
   toggleItemDone(item) {
-
     item = update(item, {
       isDone: {$set: !item.isDone}
     });
-
     iGrocery.update(item);
+  }
+
+  onItemContentChange(item, e) {
+    item = update(item, {
+      title: {$set: e.target.value}
+    });
+    this.updateItemContent.onNext(item);
   }
 
   mapGroceryList(items) {
@@ -113,6 +132,7 @@ class GroceryEditor extends React.Component {
           key={x._id}>
           <Checkbox onClick={this.toggleItemDone.bind(this, x)} style={cbStyle} name="grocery" checked={x.isDone} />
           <TextField
+            onChange={this.onItemContentChange.bind(this, x)}
             onBlur={this.disableEditMode.bind(this, x._id)}
             onTouchTap={this.enableEditMode.bind(this, x._id)}
             className={tfClass} defaultValue={x.title} />
@@ -125,6 +145,10 @@ class GroceryEditor extends React.Component {
 
     if (!this.state) { return <div>...</div>;  }
 
+    let storeState = {
+      items: this.state.items
+    };
+
     return (
       <div>
         <List subheader="Groceries">
@@ -134,6 +158,9 @@ class GroceryEditor extends React.Component {
         </List>
 
         {this.mapGroceryList(this.state.items)}
+
+        <h3>Grocery store state: </h3>
+        <div><pre>{JSON.stringify( storeState || {}, null, 2)}</pre></div>
       </div>
     );
   }

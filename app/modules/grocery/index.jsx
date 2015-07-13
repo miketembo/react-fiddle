@@ -3,20 +3,29 @@ import {iGrocery} from './grocery.interface';
 import {groceryHandler} from './grocery.handler';
 import {groceryStore} from './grocery.store';
 
+import Debug from 'debug';
+Debug.enable('iGrocery*');
+let debug = Debug('iGrocery:debug');
+let info = Debug('iGrocery:info');
+
 export {GroceryEditor, iGrocery, groceryHandler};
 
 /*
+    [ ] update store without iterating over each element
     [x] add new
-    [ ] edit
+    [x] edit
     [x] remove
     [ ] undo
-    [ ] (un)mark as done
+    [x] (un)mark as done
     [ ] persist any change
+    [ ] load via localStorage/server/pouchdb
+    [ ] test
+    [ ] use other material design framework
  */
 
  iGrocery.src.subscribe(
    (x) => {
-     console.log("iGrocery. action: %s", x.action);
+     info('[action] %s', x.action);
    }
  );
 

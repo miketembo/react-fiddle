@@ -1,6 +1,74 @@
 import {iGrocery} from './grocery.interface';
 import {update} from 'util';
 import _ from 'lodash';
+import Immutable, {Seq, Map, OrderedMap} from 'immutable';
+import Debug from 'debug';
+Debug.enable('grocery.store*');
+
+function subscribe() {}
+
+let toImmutableItem = x => Map(x.data.item || x.data);
+
+let store = (() => {
+  let debug = Debug('grocery.store:debug');
+  let info = Debug('grocery.store:info');
+
+  let state = Map({
+    items: OrderedMap()
+  });
+  let subj = new Rx.Subject();
+  let observer = Rx.Observer.create(
+    (_state) => {
+      subj.onNext(state = _state);
+    }
+  );
+  subj.subscribe(
+    (s) => {
+      info('[onNext]', s);
+    }
+  );
+
+  /**
+   * @param item {Map}
+   */
+  function addToItems(item) {
+    return state.setIn(['items', item.get('_id')], item);
+  }
+
+  /**
+   * @param item {Map}
+   */
+  function updateInItems(item) {
+    return state.updateIn(['items', item.get('_id')], x => item);
+  }
+
+  subscribe(
+    iGrocery.$on(iGrocery.keys.ADD_DONE)
+      .map(toImmutableItem)
+      .map(addToItems)
+      .subscribe(observer)
+  );
+
+  subscribe(
+    iGrocery.$on(iGrocery.keys.UPDATE_DONE)
+      .map(toImmutableItem)
+      .map(updateInItems)
+      .subscribe(observer)
+  );
+
+  subscribe(
+    iGrocery.$on(iGrocery.keys.REMOVE_DONE)
+      .map( x => x.data.item._id )
+      .map( id => state.removeIn(['items', id]) )
+      .subscribe(observer)
+  );
+
+  return {
+    subj: subj,
+    subscribe: subj.subscribe.bind(subj)
+  }
+})();
+
 
 export let groceryStore = (function GroceryStore() {
   let state = {
@@ -34,7 +102,7 @@ export let groceryStore = (function GroceryStore() {
         items: {
           $push: [x.data]
         }
-      })
+      });
     })
     .subscribe(observer)
   ;
