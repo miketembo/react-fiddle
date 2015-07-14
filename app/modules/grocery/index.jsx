@@ -1,3 +1,4 @@
+import {React} from 'util';
 import GroceryEditor from './grocery-editor';
 import {iGrocery} from './grocery.interface';
 import {groceryHandler} from './grocery.handler';
@@ -8,10 +9,27 @@ Debug.enable('iGrocery*');
 let debug = Debug('iGrocery:debug');
 let info = Debug('iGrocery:info');
 
-export {GroceryEditor, iGrocery, groceryHandler};
+export {GroceryEditor, iGrocery, groceryHandler, groceryStore};
+
+export class GroceryEditorRender extends React.Component {
+  componentWillMount() {
+    this.storeSubscription = groceryStore.subscribe(
+      (state) => {
+        this.setState(state);
+      }
+    );
+  }
+  componentWillUnmount() {
+    this.storeSubscription.dispose();
+  }
+
+  render() {
+    return <GroceryEditor {...this.state} />;
+  }
+}
 
 /*
-    [ ] update store without iterating over each element
+    [x] update store without iterating over each element
     [x] add new
     [x] edit
     [x] remove
@@ -31,10 +49,10 @@ export {GroceryEditor, iGrocery, groceryHandler};
 
 [
   'Macaroni',
-  // 'Salmon',
-  // 'Cheese',
-  // 'Pepper',
-  // 'Salt',
+  'Salmon',
+  'Cheese',
+  'Pepper',
+  'Salt',
   'Strawberries'
 ].forEach(function(x) {
   iGrocery.addDone({
