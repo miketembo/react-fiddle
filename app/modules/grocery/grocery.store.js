@@ -1,5 +1,5 @@
 import {iGrocery} from './grocery.interface';
-import {update} from 'util';
+import {Rx, update} from 'util';
 import _ from 'lodash';
 import Immutable, {Seq, Map, OrderedMap} from 'immutable';
 import Debug from 'debug';
@@ -70,7 +70,7 @@ export let groceryStore = (() => {
   return {
     subj: subj,
     subscribe: subj.subscribe.bind(subj)
-  }
+  };
 })();
 
 

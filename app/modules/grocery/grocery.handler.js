@@ -41,7 +41,7 @@ class GroceryHandler {
   }
 
   remove(item) {
-    return Rx.Observable.return({code:204, item: item}).delay(300);
+    return Rx.Observable.return({code: 204, item: item}).delay(300);
   }
 
   update(item) {

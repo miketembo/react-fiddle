@@ -1,6 +1,6 @@
 import React from 'react/addons';
-import mui from 'material-ui';
+import Rx from 'rx';
 
 export let UIComponent = React.Component;
 export let {update} = React.addons;
-export {React};
+export {React, Rx};

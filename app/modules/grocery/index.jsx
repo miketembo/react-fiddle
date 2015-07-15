@@ -1,33 +1,23 @@
-import {React} from 'util';
+// import {React} from 'util';
+// import {Container} from 'touchstonejs';
 import GroceryEditor from './grocery-editor';
 import {iGrocery} from './grocery.interface';
 import {groceryHandler} from './grocery.handler';
 import {groceryStore} from './grocery.store';
+import {GroceryListView} from './grocery-list.view';
 
 import Debug from 'debug';
 Debug.enable('iGrocery*');
 let debug = Debug('iGrocery:debug');
 let info = Debug('iGrocery:info');
 
-export {GroceryEditor, iGrocery, groceryHandler, groceryStore};
-
-export class GroceryEditorRender extends React.Component {
-  componentWillMount() {
-    this.storeSubscription = groceryStore.subscribe(
-      (state) => {
-        this.setState(state);
-      }
-    );
-  }
-  componentWillUnmount() {
-    this.storeSubscription.dispose();
-  }
-
-  render() {
-    return <GroceryEditor {...this.state} />;
-  }
-}
-
+export {
+  iGrocery,
+  groceryHandler,
+  groceryStore,
+  GroceryListView,
+  GroceryEditor
+};
 /*
     [x] update store without iterating over each element
     [x] add new
@@ -41,11 +31,11 @@ export class GroceryEditorRender extends React.Component {
     [ ] use other material design framework
  */
 
- iGrocery.src.subscribe(
-   (x) => {
-     info('[action] %s', x.action);
-   }
- );
+iGrocery.src.subscribe(
+  (x) => {
+    info('[action] %s', x.action);
+  }
+);
 
 [
   'Macaroni',

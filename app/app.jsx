@@ -8,43 +8,12 @@ import './scss/app.scss';``
 import React from 'react';
 require('react-tap-event-plugin')();
 
-// import {GroceryEditor} from 'modules/grocery'
-
-// React.render(
-//   <GroceryEditor />,
-//   document.getElementById('app')
-// );
-
-import {GroceryEditorRender} from 'modules/grocery';
-
-// React.render(
-//   <GroceryEditorRender />,
-//   document.getElementById('app')
-// );
+import {GroceryListView} from 'modules/grocery';
 
 import {createApp, UI, View, ViewManager, Container} from 'touchstonejs';
 let {NavigationBar, Tabs, GroupHeader} = UI;
 let {Tab} = Tabs;
 let TabLabel = Tabs.Label;
-
-let GroceryListView = React.createClass({
-  statics: {
-    navigationBar: 'main',
-    getNavigation ({name}) {
-      return {
-        title: name
-      }
-    }
-  }
-  ,
-  render() {
-    return (
-      <Container>
-        <GroceryEditorRender />
-      </Container>
-    );
-  }
-});
 
 class TabsNavView extends React.Component {
   render() {
