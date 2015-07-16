@@ -32,10 +32,8 @@
     "js-beautify": "^1.5.10",
     "json-loader": "^0.5.2",
     "lodash": "^3.10.0",
-    "material-ui": "^0.9.2",
     "normalize.css": "^3.0.3",
     "react": "^0.13.3",
-    "react-bootstrap": "^0.23.7",
     "react-router": "^0.13.3",
     "react-tap-event-plugin": "^0.1.7",
     "rx": "^2.5.3",
@@ -126,7 +124,6 @@
       "react/react-in-jsx-scope": 1,
       "react/self-closing-comp": 1,
       "react/wrap-multilines": 1,
-
       "no-underscore-dangle": 0,
       "new-cap": 0
     }

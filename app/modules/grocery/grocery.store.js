@@ -19,7 +19,7 @@ export let groceryStore = (() => {
   let subj = new Rx.BehaviorSubject(state);
   let observer = Rx.Observer.create(
     (_state) => {
-      state = _state;
+      state = _state.updateIn(['items'], items => items.sortBy(x => x.get('isDone')));
 
       subj.onNext({
         items: state.get('items').map(x => x.toJS()).toArray()

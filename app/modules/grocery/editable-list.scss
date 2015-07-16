@@ -1,27 +1,53 @@
-.editableList__item {
-
-  & > div > div {
-    padding-top: 0 !important;
-    padding-bottom: !important;
-  }
-
-  &._is_hidden {
-    opacity: 0;
-    visibility: 0;
-    height: 0;
-    min-height: 0;
-    pointer-events: none;
+.groceryEditor__item {
+  // research if there's a default for disabling the border on Item/Item__inner
+  & > .Item__inner:after {
+    background-color: transparent;
   }
 }
 
-.textfield {
-  hr {
-    opacity: 0;
+.groceryListItem__textfield {
+  &._isDone .field {
+    color: #ccc;
+    text-decoration: line-through;
   }
 
-  &._is_editable {
-    hr {
-      opacity: 1;
-    }
+  & > .Item__inner:after {
+    background-color: transparent;
+    height: 1px;
+    transition: background-color .2s, height .2s;
+  }
+
+  &._isEditable > .Item__inner:after {
+    background-color: #333;
+    height: 2px;
+    transform: scale(1);
   }
 }
+
+// .editableList__item {
+//
+//   & > div > div {
+//     padding-top: 0 !important;
+//     padding-bottom: !important;
+//   }
+//
+//   &._is_hidden {
+//     opacity: 0;
+//     visibility: 0;
+//     height: 0;
+//     min-height: 0;
+//     pointer-events: none;
+//   }
+// }
+//
+// .textfield {
+//   hr {
+//     opacity: 0;
+//   }
+//
+//   &._is_editable {
+//     hr {
+//       opacity: 1;
+//     }
+//   }
+// }

@@ -1,5 +1,6 @@
 import {React, UIComponent} from 'util';
 import {groceryStore} from './grocery.store';
+import GroceryListItem from './grocery-list-item';
 
 import {UI, View, Container} from 'touchstonejs';
 let {
@@ -13,23 +14,12 @@ let debug = Debug('groceryEditor:debug');
 
 // title, input, itemList(checkbox, textfield, actions(removeBtn))
 
-class GroceryItem extends UIComponent {
-  render() {
-    let {data} = this.props;
-    return (
-      <Item className={'groceryItem groceryEditor__item'}>
-        <Input placeholder="enter grocery" defaultValue={data.title} />
-      </Item>
-    );
-  }
-}
-
 export default class GroceryEditor extends UIComponent {
   render() {
     let {items} = this.props;
     return (
       <Container className={'groceryEditor'}>
-        {_.map(items, x => <GroceryItem key={x._id} data={x} />)}
+        {_.map(items, x => <GroceryListItem key={x._id} data={x} />)}
       </Container>
     );
   }

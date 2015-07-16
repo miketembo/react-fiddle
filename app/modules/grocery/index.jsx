@@ -1,5 +1,6 @@
-// import {React} from 'util';
+import {_} from 'util';
 // import {Container} from 'touchstonejs';
+require('./editable-list.scss');
 import GroceryEditor from './grocery-editor';
 import {iGrocery} from './grocery.interface';
 import {groceryHandler} from './grocery.handler';
@@ -49,6 +50,7 @@ iGrocery.src.subscribe(
     _id: Date.now(),
     createdAt: new Date().toISOString(),
     title: x,
-    isDone: false //Math.random() < 0.5
+    isDone: Math.random() < 0.5,
+    categoryIcon: ['ion-ios-nutrition-outline', 'ion-pizza', 'ion-beer', 'ion-wineglass', 'ion-coffee'][_.random(0,4)]
   });
 });
