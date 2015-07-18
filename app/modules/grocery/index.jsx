@@ -8,7 +8,7 @@ import {groceryStore} from './grocery.store';
 import {GroceryListView} from './grocery-list.view';
 
 import Debug from 'debug';
-Debug.enable('iGrocery*');
+// Debug.enable('iGrocery*');
 let debug = Debug('iGrocery:debug');
 let info = Debug('iGrocery:info');
 

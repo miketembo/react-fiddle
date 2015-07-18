@@ -37,7 +37,8 @@
     "react-router": "^0.13.3",
     "react-tap-event-plugin": "^0.1.7",
     "rx": "^2.5.3",
-    "touchstonejs": "^0.4.2"
+    "touchstonejs": "^0.4.2",
+    "underscore.string": "^3.1.1"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.1.11",
@@ -113,7 +114,7 @@
       "react/display-name": 0,
       "react/jsx-quotes": 1,
       "react/jsx-no-undef": 1,
-      "react/jsx-sort-props": 1,
+      "react/jsx-sort-props": 0,
       "react/jsx-uses-react": 1,
       "react/jsx-uses-vars": 1,
       "react/no-did-mount-set-state": 1,

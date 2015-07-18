@@ -11,6 +11,11 @@ class GroceryHandler {
       .subscribe(iGrocery.addDone.bind(iGrocery))
     ;
 
+    iGrocery.$on(iGrocery.keys.ADD_EMPTY)
+      .flatMap(this.addEmpty)
+      .subscribe(iGrocery.addEmptyDone.bind(iGrocery))
+    ;
+
     iGrocery.$on(iGrocery.keys.REMOVE)
       .map( this._mapData )
       .flatMap(this.remove)
@@ -38,6 +43,16 @@ class GroceryHandler {
 
       }, 300);
     });
+  }
+
+  addEmpty() {
+    return Rx.Observable.return({
+      _id: Date.now(),
+      title: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: null,
+      isDone: false
+    }).delay(300);
   }
 
   remove(item) {

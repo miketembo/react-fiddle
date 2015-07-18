@@ -1,11 +1,7 @@
-import {React, UIComponent} from 'util';
-import {groceryStore} from './grocery.store';
+import {React, UIComponent, _} from 'util';
 import GroceryListItem from './grocery-list-item';
 
-import {UI, View, Container} from 'touchstonejs';
-let {
-  Tab, Item, ItemInner, Group, Input
-} = UI;
+import {Container} from 'touchstonejs';
 
 import Debug from 'debug';
 Debug.enable('groceryEditor*');
@@ -16,10 +12,10 @@ let debug = Debug('groceryEditor:debug');
 
 export default class GroceryEditor extends UIComponent {
   render() {
-    let {items} = this.props;
+    let {items, activeItemId} = this.props;
     return (
       <Container className={'groceryEditor'} scrollable>
-        {_.map(items, x => <GroceryListItem key={x._id} data={x} />)}
+        {_.map(items, x => <GroceryListItem key={x._id} data={x} autoFocus={x._id === activeItemId} />)}
       </Container>
     );
   }

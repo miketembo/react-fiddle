@@ -54,8 +54,8 @@ export default class GroceryListItem extends UIComponent {
   }
 
   render() {
-    let {state} = this;
-    let {data} = this.props;
+    let {state, props} = this;
+    let {data} = props;
 
     let itemClassName = cn({
       groceryItem: true,
@@ -79,9 +79,9 @@ export default class GroceryListItem extends UIComponent {
               defaultValue={data.title}
               onBlur={this.onItemDeactivate.bind(this)}
               onChange={this.onTitleFieldChange.bind(this)}
-              onTouchTap={this.onItemActivate.bind(this)}
-              placeholder="enter grocery"
-              stopPropagation />
+              onFocus={this.onItemActivate.bind(this)}
+              autoFocus={props.autoFocus}
+              placeholder="enter grocery" />
           </ItemContent>
 
           <div className={'ButtonGroup--inline'}>

@@ -2,6 +2,7 @@ import RxF from 'util/rxf';
 
 let actions = [
   'add',
+  'addEmpty',
   'update',
   'remove'
 ];

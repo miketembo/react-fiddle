@@ -1,9 +1,12 @@
 import _ from 'lodash';
+import _s from 'underscore.string';
+
+console.log(_s.underscored('addEmpty'));
 
 export function createActionKeys(topic, actions) {
   return actions.reduce( (ac, x) => {
     let actionName = _.camelCase(x);
-    let ucActionName = actionName.toUpperCase();
+    let ucActionName = _s.underscored(actionName).toUpperCase();
     let enumerable = true;
     Object.defineProperty(ac,   ucActionName,             {value: `${topic}__${actionName}`, enumerable});
     Object.defineProperty(ac,   `${ucActionName}_DONE`,   {value: `${topic}__${actionName}--done`, enumerable});
