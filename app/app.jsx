@@ -8,17 +8,60 @@ import './scss/app.scss';``
 import React from 'react';
 require('react-tap-event-plugin')();
 
-import {GroceryListView} from 'modules/grocery';
-
+import {GroceryListView, iGrocery} from 'modules/grocery';
+import {Rx} from 'util';
 import {createApp, UI, View, ViewManager, Container} from 'touchstonejs';
 let {NavigationBar, Tabs, GroupHeader} = UI;
 let {Tab} = Tabs;
 let TabLabel = Tabs.Label;
 
+let appKeys = iGrocery.exportKeys();
+
+class Progress extends React.Component {
+  componentWillMount() {
+    this.state = {};
+
+    let {
+      GROCERYEDITOR_UPDATE,
+      GROCERYEDITOR_REMOVE,
+      GROCERYEDITOR_UPDATE_DONE,
+      GROCERYEDITOR_REMOVE_DONE,
+    } = appKeys;
+
+    let obs = Rx.Observer.create(
+      (p) => {
+        this.setState({
+          visible: p.state === 'pending'
+        });
+      }
+    );
+
+    iGrocery.$onMany(
+      GROCERYEDITOR_UPDATE,
+      GROCERYEDITOR_REMOVE,
+      GROCERYEDITOR_UPDATE_DONE,
+      GROCERYEDITOR_REMOVE_DONE
+    )
+    // don't show message for fast operations
+    .throttle(10)
+    .distinctUntilChanged( x => x.state )
+    .subscribe(obs);
+  }
+
+  render() {
+    let {state} = this;
+    return (
+      <UI.Alertbar visible={state.visible}>{'working...'}</UI.Alertbar>
+    );
+  }
+}
+
+
 class TabsNavView extends React.Component {
   render() {
     return (
       <Container>
+        <Progress />
         <ViewManager ref="vm" name="tabs" defaultView={'groceries'}>
           <View name="groceries" component={GroceryListView} />
         </ViewManager>

@@ -24,6 +24,39 @@
   }
 }
 
+$color-primary: lighten(orange, 10%);
+
+.ButtonGroup--inline {
+  display: flex;
+  position: absolute;
+  transform: translateX(-15px); // @TODO add classes with numeric value to indent back
+  z-index: 1;
+  justify-content: flex-end;
+  right: 0;
+
+  & > .Button {
+    margin: 0;
+    display: inline-block;
+    background: none;
+    padding: 0 6px;
+    width: 44px;
+
+    & + .Button {
+      margin: 0;
+    }
+
+    &:after, &:before {
+      background: none;
+      height: 0;
+    }
+
+    &._isInactive {
+      color: #ccc;
+    }
+  }
+
+}
+
 // .editableList__item {
 //
 //   & > div > div {

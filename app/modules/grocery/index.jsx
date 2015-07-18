@@ -20,16 +20,17 @@ export {
   GroceryEditor
 };
 /*
-    [x] update store without iterating over each element
-    [x] add new
-    [x] edit
-    [x] remove
-    [ ] undo
-    [x] (un)mark as done
-    [ ] persist any change
+    [ ] add new
+    [ ] persist any change to a storageService
     [ ] load via localStorage/server/pouchdb
+    [ ] handle system errors
     [ ] test
-    [ ] use other material design framework
+    [ ] set state manually (on a store?)
+    [x] display user notifications
+    [x] remove
+    [x] update store without iterating over each element
+    [x] edit
+    [x] (un)mark as done
  */
 
 iGrocery.src.subscribe(

@@ -18,7 +18,7 @@ export default class GroceryEditor extends UIComponent {
   render() {
     let {items} = this.props;
     return (
-      <Container className={'groceryEditor'}>
+      <Container className={'groceryEditor'} scrollable>
         {_.map(items, x => <GroceryListItem key={x._id} data={x} />)}
       </Container>
     );

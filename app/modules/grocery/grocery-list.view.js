@@ -1,4 +1,4 @@
-import {React} from 'util';
+import {React, _} from 'util';
 // import {Container} from 'touchstonejs';
 import {groceryStore} from './grocery.store';
 import GroceryEditor from './grocery-editor';
@@ -8,7 +8,7 @@ export let GroceryListView = React.createClass({
     navigationBar: 'main',
     getNavigation ({name}) {
       return {
-        title: name
+        title: _.capitalize(name)
       };
     }
   }

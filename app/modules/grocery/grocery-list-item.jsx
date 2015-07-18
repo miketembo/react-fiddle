@@ -43,8 +43,8 @@ export default class GroceryListItem extends UIComponent {
     );
   }
 
-  onTrashTap() {
-
+  onTrashTap(e) {
+    iGrocery.remove(this.props.data);
   }
 
   onTitleFieldChange(e) {
@@ -83,18 +83,12 @@ export default class GroceryListItem extends UIComponent {
               placeholder="enter grocery"
               stopPropagation />
           </ItemContent>
-          {/*<div onTouchTap={this.onTrashTap.bind(this)}>
-            <ItemNote
-              icon={'ion-trash-b'}
-              className={'ion-lg'}
-            />
-          </div>*/}
-          <div
-            onTouchTap={this.onCheckboxTap.bind(this)}>
-            <ItemNote
-              className={'ion-lg'}
-              icon={data.isDone ? 'ion-android-checkbox' : 'ion-android-checkbox-outline-blank'}
-              type={data.isDone ? 'default' : 'primary'} /> {/* @TODO type will set a color for the icon e.g warning is orange-yellow */}
+
+          <div className={'ButtonGroup--inline'}>
+            {state.isEditable ? <UI.Button onTouchTap={this.onTrashTap.bind(this)} stopPropagation><i className={'ion-trash-b ion-lg'} /></UI.Button> : null}
+            <UI.Button type={'primary'} onTouchTap={this.onCheckboxTap.bind(this)} stopPropagation className={(data.isDone ? '_isInactive' : '')}>
+              <i className={'ion-checkmark-round ion-lg '} />
+            </UI.Button>
           </div>
         </ItemInner>
       </Item>
